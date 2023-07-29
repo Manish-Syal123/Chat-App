@@ -32,3 +32,28 @@ app.listen(port, () => {
 
 const User = require("./models/user");
 const Message = require("./models/message");
+
+//endPoint for registeration
+// get api =>to read data through api
+// Post api =>to save new data into database
+// Put api =>to update data
+// delete api =>to delete data through api
+
+app.post("/regester", (req, res) => {
+  // "/register": This is the URL path of the route. In this case, the path is "/register," meaning that the route will be triggered when a POST request is made to the "/register" URL of the server.
+  const { name, email, password, image } = req.body; // whatever details user has entered in the register page and pressed the "Register button" is considered as the request to the server
+
+  //create a new User object
+  const newUser = new User({ name, email, password, image });
+
+  // save the user to the database ie. to the "User" collection
+  newUser
+    .save()
+    .then(() => {
+      res.status(200).json({ message: "User registered successfully" }); // sending a message responce back to user
+    })
+    .catch((err) => {
+      console.log("Error registering the user", err);
+      res.status(500).json({ message: "Error registering the user" });
+    });
+});
