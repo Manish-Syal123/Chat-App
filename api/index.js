@@ -26,8 +26,9 @@ mongose
     console.log("Error connecting to MongoDb", err);
   });
 
-app.listen(port, () => {
-  console.log("Server running on port 8000");
+app.listen(port, "192.168.0.136", () => {
+  // console.log("Server running on port 8000");
+  console.log("Server running on http://192.168.0.136");
 });
 
 const User = require("./models/user");
@@ -46,7 +47,7 @@ app.post("/regester", (req, res) => {
   //create a new User object
   const newUser = new User({ name, email, password, image });
 
-  // save the user to the database ie. to the "User" collection
+  // save the user to the database ie. in the "User" collection
   newUser
     .save()
     .then(() => {
@@ -55,5 +56,49 @@ app.post("/regester", (req, res) => {
     .catch((err) => {
       console.log("Error registering the user", err);
       res.status(500).json({ message: "Error registering the user" });
+    });
+});
+
+//function to create a token for the user
+const createToken = (userId) => {
+  // Set the token payload
+  const payload = {
+    userId: userId,
+  };
+
+  // Generate the token with a secret key and expiration time
+  const token = jwt.sign(payload, "Q$r2K6W8n!jCW%Zk", { expiresIn: "1h" });
+
+  return token;
+};
+
+//enpoint for logging in of that particular user
+app.post("/login", (req, resp) => {
+  const { email, password } = req.body;
+
+  //check if the email and password are provided
+  if (!email || !password) {
+    return resp.status(404).json({ message: "Email & Password are required" });
+  }
+
+  //check for that user in the database
+  User.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        //user not found
+        return resp.status(404).json({ message: "User not found" });
+      }
+
+      //compare the provided passwords with the password in the database
+      if (user.password !== password) {
+        return resp.status(404).json({ message: "Invalid Password!" });
+      }
+
+      const token = createToken(user._id);
+      resp.status(200).json({ token }); //if everything is fine then send the response to the frontend part
+    })
+    .catch((err) => {
+      console.log("error in sending the user", err);
+      resp.status(500).json({ message: "Internal server Error!" });
     });
 });

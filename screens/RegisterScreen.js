@@ -5,9 +5,11 @@ import {
   Text,
   TextInput,
   View,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
@@ -15,6 +17,38 @@ const RegisterScreen = () => {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const navigation = useNavigation();
+
+  const handleRegister = () => {
+    const user = {
+      name: name,
+      email: email,
+      password: password,
+      image: image,
+    };
+
+    // send a Post 'request' to the backentd API to register the user
+    axios
+      .post("http://192.168.0.136:8000/regester", user)
+      .then((response) => {
+        console.log(response);
+        Alert.alert(
+          "Registeration successfull",
+          "You have been registered successfully"
+        );
+        //set all the fields to empty
+        setName("");
+        setEmail("");
+        setPassword("");
+        setImage("");
+      })
+      .catch((err) => {
+        Alert.alert(
+          "Registeration Error",
+          "An error occurred while registering"
+        );
+        console.log("registeration failed", err);
+      });
+  };
 
   return (
     <View
@@ -126,7 +160,7 @@ const RegisterScreen = () => {
 
           {/* Sign Up Button */}
           <Pressable
-            //onPress={handleLogin}
+            onPress={handleRegister}
             style={{
               width: 200,
               backgroundColor: "#4A55A2",
