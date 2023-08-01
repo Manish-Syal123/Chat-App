@@ -115,3 +115,5 @@ app.get("/users/:userId", (req, resp) => {
     resp.status(500).json({ message: "Error retrieving users" });
   })
 })
+
+//endpoint to send a request to a user

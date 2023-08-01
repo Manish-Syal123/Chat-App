@@ -6,6 +6,7 @@ import { UserType } from "../UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+import User from "../components/User";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -32,8 +33,8 @@ const HomeScreen = () => {
   }, [])
 
   useEffect(() => {
-    const fetchusers = async () => {
-      const token = await AsyncStorage.getItem("authToken"); //token of current loggedInUser
+    const fetchUsers = async () => {
+      const token = await AsyncStorage.getItem("authToken");
       const decodedToken = jwt_decode(token);
       const userId = decodedToken.userId;
       setUserId(userId); //Storing the decoded UserId of Current loggedInUser ie. '_id' in terms of Database of "User" collection
@@ -42,18 +43,23 @@ const HomeScreen = () => {
         .get(`http://192.168.0.136:8000/users/${userId}`)
         .then((response) => {
           setUsers(response.data);
-        }).catch((err) => {
-          console.log("error retrieving users", err);
+        })
+        .catch((error) => {
+          console.log("error retrieving users", error);
         });
-    }
+    };
 
-    fetchusers();
-  }, [])
+    fetchUsers();
+  }, []);
 
   console.log("users", users);
   return (
     <View>
-      <Text>HomeScreen</Text>
+      <View style={{ padding: 10 }}>
+        {users.map((item, index) => (
+          <User key={index} item={item} />
+        ))}
+      </View>
     </View>
   );
 };
