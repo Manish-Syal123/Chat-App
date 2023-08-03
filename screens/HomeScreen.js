@@ -37,7 +37,7 @@ const HomeScreen = () => {
       const token = await AsyncStorage.getItem("authToken");
       const decodedToken = jwt_decode(token);
       const userId = decodedToken.userId;
-      setUserId(userId); //Storing the decoded UserId of Current loggedInUser ie. '_id' in terms of Database of "User" collection
+      setUserId(userId); //storing the decoded UserId of Current loggedInUser ie. '_id' in terms of Database of "User" collection
 
       axios
         .get(`http://192.168.0.136:8000/users/${userId}`)
