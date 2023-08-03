@@ -1,7 +1,38 @@
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
+import { UserType } from '../UserContext';
+import { useNavigation } from '@react-navigation/native';
 
-const FriendRequest = ({ item, friendRequest, setFriendRequests }) => {
+const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
+    const { userId, setUserId } = useContext(UserType);
+    const navigation = useNavigation();
+    const acceptRequest = async (friendRequestId) => {
+        try {
+            const response = await fetch(
+                "http://192.168.0.136:8000/friend-request/accept",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        senderId: friendRequestId,//other person who sent me the friendrequest
+                        recepientId: userId,// Now here I am the receiver
+                    })
+                }
+            )
+
+            if (response.ok) {
+                //updating this friendRequests array in frontend part of current user who received this friendRequests
+                setFriendRequests(
+                    friendRequests.filter((request) => request._id !== friendRequestId)
+                );
+                navigation.navigate("Chats");
+            }
+        } catch (err) {
+            console.log("error accepting the friend request", err);
+        }
+    }
     return (
         <Pressable style={{
             flexDirection: "row",
@@ -15,7 +46,7 @@ const FriendRequest = ({ item, friendRequest, setFriendRequests }) => {
                 "{item.name}" sent you a friend request!!
             </Text>
 
-            <Pressable style={{ backgroundColor: "#0066b2", padding: 10, borderRadius: 6 }}>
+            <Pressable onPress={() => acceptRequest(item._id)} style={{ backgroundColor: "#0066b2", padding: 10, borderRadius: 6 }}>
                 <Text style={{ textAlign: "center", color: "white" }}>Accept</Text>
             </Pressable>
         </Pressable>

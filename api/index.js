@@ -35,8 +35,8 @@ const User = require("./models/user");
 const Message = require("./models/message");
 
 //endPoint for registeration
-// get api =>to read data through api
-// Post api =>to save new data into database
+// get api =>to read data through api or from database
+// Post api =>to save(push) new data into database
 // Put api =>to update data
 // delete api =>to delete data through api
 
@@ -148,6 +148,39 @@ app.get("/friend-request/:userId", async (req, resp) => {
     const freindRequests = user.freindRequests;
 
     resp.json(freindRequests);
+  } catch (error) {
+    console.log(error);
+    resp.status(500).json({ message: "Internal Server Error" });
+  }
+})
+
+//endpoint to accept a friend-request of a particular person
+app.post("/friend-request/accept", async (req, resp) => {
+  try {
+    const { senderId, recepientId } = req.body; // I am the receiver and sender is the other person
+
+    //retrieve the documents(object or details) of sender and the recipient
+    const sender = await User.findById(senderId);
+    const recepient = await User.findById(recepientId);
+
+    // those who are Accepted as a friend there Id's are stored into the 'friends array' of both sender and receiver , and only those people can chat with each other
+    sender.friends.push(recepientId); //its the current user
+    recepient.friends.push(senderId); //other person
+
+    // 'I am the receiver here' and I have Accepted the senders request, so Update my freindRequests array 
+    recepient.freindRequests = recepient.freindRequests.filter(
+      (request) => request.toString() !== senderId.toString()
+    )
+
+    // 'Sender is the other person here' As I have Accepted its request so I have to update the senders(other persons) sentFriendRequests array
+    sender.sentFriendRequests = sender.sentFriendRequests.filter(
+      (request) => request.toString() !== recepientId.toString()
+    )
+
+    await sender.save();
+    await recepient.save();
+
+    resp.status(200).json({ message: "Friend Request accepted successfully" })
   } catch (error) {
     console.log(error);
     resp.status(500).json({ message: "Internal Server Error" });
