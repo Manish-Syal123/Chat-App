@@ -28,6 +28,7 @@ const ChatsScreen = () => {
     console.log("friends", acceptedFriends)
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
+            {/* Showing profiles of individual friends with whome current user has done chatting */}
             <Pressable>
                 {acceptedFriends.map((item, index) => (
                     <UserChat key={index} item={item} />

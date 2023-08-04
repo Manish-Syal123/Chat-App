@@ -6,6 +6,7 @@ const UserChat = ({ item }) => {
     const navigation = useNavigation();
 
     return (
+        // single Pressable representing the Individual friends profile with whome current user has done chating
         <Pressable
             onPress={() =>
                 navigation.navigate("Messages", {
