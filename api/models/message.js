@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const messageSchema = new mongoose.Schema({
   senderId: {
     type: mongoose.Schema.Types.ObjectId, //object ID of Sender (the 'current user' who have already registered in this application) which is Already present in the database
-    ref: "User", // There could be multiple collections in the DataBase so only refere(choose) ObjectID from  to the "User" collection
+    ref: "User", // There could be multiple collections in the DataBase so, only refere(choose) ObjectID from  to the "User" collection
   },
   recepientId: {
     type: mongoose.Schema.Types.ObjectId,

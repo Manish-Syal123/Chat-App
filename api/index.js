@@ -103,18 +103,19 @@ app.post("/login", (req, resp) => {
     });
 });
 
-
 //endpoint to access to all the users except the current loggedin user
 app.get("/users/:userId", (req, resp) => {
   const loggedInUserId = req.params.userId; //Id of current loggedIn user grabbed from URL=>"/users/:userId"
   //$ne => 'Not' => find all the user details except the current loggedInUserId
-  User.find({ _id: { $ne: loggedInUserId } }).then((users) => {
-    resp.status(200).json(users)
-  }).catch((err) => {
-    console.log("Error retrieving users", err);
-    resp.status(500).json({ message: "Error retrieving users" });
-  })
-})
+  User.find({ _id: { $ne: loggedInUserId } })
+    .then((users) => {
+      resp.status(200).json(users);
+    })
+    .catch((err) => {
+      console.log("Error retrieving users", err);
+      resp.status(500).json({ message: "Error retrieving users" });
+    });
+});
 
 //endpoint to send a request to a user
 app.post("/friend-request", async (req, resp) => {
@@ -124,18 +125,18 @@ app.post("/friend-request", async (req, resp) => {
     //update the recepient's(the person who is receiving the request) friendRequestsArray! , he will have the choice to 'Accept' it
     await User.findByIdAndUpdate(selectedUserId, {
       $push: { freindRequests: currentUserId },
-    })
+    });
 
     //update the sender's sentFriendRequests array
     await User.findByIdAndUpdate(currentUserId, {
-      $push: { sentFriendRequests: selectedUserId }
-    })
+      $push: { sentFriendRequests: selectedUserId },
+    });
 
     resp.sendStatus(200);
   } catch (error) {
     resp.sendStatus(500);
   }
-})
+});
 
 //endpoint to show all the friend-requests of a particular user
 app.get("/friend-request/:userId", async (req, resp) => {
@@ -143,7 +144,9 @@ app.get("/friend-request/:userId", async (req, resp) => {
     const { userId } = req.params; //current userId
 
     //fetch the user document based on the User id
-    const user = await User.findById(userId).populate("freindRequests", "name email image").lean();
+    const user = await User.findById(userId)
+      .populate("freindRequests", "name email image")
+      .lean();
 
     const freindRequests = user.freindRequests;
 
@@ -152,7 +155,7 @@ app.get("/friend-request/:userId", async (req, resp) => {
     console.log(error);
     resp.status(500).json({ message: "Internal Server Error" });
   }
-})
+});
 
 //endpoint to accept a friend-request of a particular person
 app.post("/friend-request/accept", async (req, resp) => {
@@ -167,25 +170,25 @@ app.post("/friend-request/accept", async (req, resp) => {
     sender.friends.push(recepientId); //its the current user
     recepient.friends.push(senderId); //other person
 
-    // 'I am the receiver here' and I have Accepted the senders request, so Update my freindRequests array 
+    // 'I am the receiver here' and I have Accepted the senders request, so Update my freindRequests array
     recepient.freindRequests = recepient.freindRequests.filter(
       (request) => request.toString() !== senderId.toString()
-    )
+    );
 
     // 'Sender is the other person here' As I have Accepted its request so I have to update the senders(other persons) sentFriendRequests array
     sender.sentFriendRequests = sender.sentFriendRequests.filter(
       (request) => request.toString() !== recepientId.toString()
-    )
+    );
 
     await sender.save();
     await recepient.save();
 
-    resp.status(200).json({ message: "Friend Request accepted successfully" })
+    resp.status(200).json({ message: "Friend Request accepted successfully" });
   } catch (error) {
     console.log(error);
     resp.status(500).json({ message: "Internal Server Error" });
   }
-})
+});
 
 //endpoint to access all the 'friends'(friends array) of the current loggedIn user!
 app.get("/accepted-friends/:userId", async (req, resp) => {
@@ -203,4 +206,30 @@ app.get("/accepted-friends/:userId", async (req, resp) => {
     console.error(error);
     resp.status(500).json({ error: "Internal Server Error" });
   }
-})
+});
+
+const upload = multer({ storage: storage });
+
+//endpoint to post Messages and store it in the backend inside 'Message' Collection(model)
+app.post("/messages", upload.single("imageFile"), async (req, resp) => {
+  try {
+    const { senderId, recepientId, messageType, messageText } = req.body;
+
+    //This below message structure(Schema) is already defined in ("./models/message")
+    //this newMessage will get store inside the 'Message' Collection(model) as a new object
+    const newMessage = new Message({
+      senderId,
+      recepientId,
+      messageType,
+      messageText,
+      timeStamp: new Date(),
+      imageUrl: messageType === "image", //when messageType is "image" then only it will gonna filled up
+    });
+
+    await newMessage.save();
+    resp.status(200).json({ message: "Message sent Successfully" });
+  } catch (error) {
+    console.log(error);
+    resp.status(500).json({ error: "Internal Server Error" });
+  }
+});

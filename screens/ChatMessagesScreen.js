@@ -79,6 +79,7 @@ const ChatMessagesScreen = () => {
           onEmojiSelected={(emoji) => {
             setMessage((prevMessage) => prevMessage + emoji);
           }}
+          //showSearchBar={false}
           style={{ height: 250 }}
         />
       )}
