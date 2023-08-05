@@ -223,11 +223,26 @@ app.post("/messages", upload.single("imageFile"), async (req, resp) => {
       messageType,
       messageText,
       timeStamp: new Date(),
-      imageUrl: messageType === "image", //when messageType is "image" then only it will gonna filled up
+      imageUrl: messageType === "image", //when messageType is "image" then only it will gonna filled up with the imageURL
     });
 
     await newMessage.save();
     resp.status(200).json({ message: "Message sent Successfully" });
+  } catch (error) {
+    console.log(error);
+    resp.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+//endpoint to get the userDetails to design the chat Room header
+//To show Person detail in the header to whome we are chating
+app.get("/user/:userId", async (req, resp) => {
+  try {
+    const { userId } = req.body;
+
+    //fetch the user data from the user ID
+    const recepientId = await User.findById(userId);
+    resp.json(recepientId);
   } catch (error) {
     console.log(error);
     resp.status(500).json({ error: "Internal Server Error" });
