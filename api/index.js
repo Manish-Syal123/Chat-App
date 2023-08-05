@@ -238,11 +238,31 @@ app.post("/messages", upload.single("imageFile"), async (req, resp) => {
 //To show Person detail in the header to whome we are chating
 app.get("/user/:userId", async (req, resp) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.params;
 
     //fetch the user data from the user ID
     const recepientId = await User.findById(userId);
     resp.json(recepientId);
+  } catch (error) {
+    console.log(error);
+    resp.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+//endpoint to fetch the messages between two users in the chatRoom which we have already stored inside the Database of message Collection
+app.get("/messages/:senderId/:recepientId", async (req, resp) => {
+  try {
+    const { senderId, recepientId } = req.params;
+
+    const messages = await Message.find({
+      //'sor' operator, which performs a logical OR operation. The query looks for messages where either....(conditions):This way, the query retrieves messages sent by senderId to recepientId and messages sent by recepientId to senderId, effectively getting the entire conversation between the two users.
+      $or: [
+        { senderId: senderId, recepientId: recepientId },
+        { senderId: recepientId, recepientId: senderId },
+      ],
+    }).populate("senderId", "_id name");
+
+    resp.json(messages);
   } catch (error) {
     console.log(error);
     resp.status(500).json({ error: "Internal Server Error" });
