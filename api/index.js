@@ -208,6 +208,17 @@ app.get("/accepted-friends/:userId", async (req, resp) => {
   }
 });
 
+const multer = require("multer");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "files/"); // Specify the desired destination folder
+  },
+  filename: function (req, file, cb) {
+    // Generate a unique filename for the uploaded file
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + "-" + file.originalname);
+  },
+});
 const upload = multer({ storage: storage });
 
 //endpoint to post Messages and store it in the backend inside 'Message' Collection(model)
@@ -221,7 +232,7 @@ app.post("/messages", upload.single("imageFile"), async (req, resp) => {
       senderId,
       recepientId,
       messageType,
-      messageText,
+      message: messageText,
       timeStamp: new Date(),
       imageUrl: messageType === "image", //when messageType is "image" then only it will gonna filled up with the imageURL
     });

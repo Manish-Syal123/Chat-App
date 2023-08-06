@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { UserType } from "../UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
@@ -20,7 +20,12 @@ const HomeScreen = () => {
       ),
       headerRight: () => (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 18 }}>
-          <Ionicons onPress={() => navigation.navigate("Chats")} name="chatbox-ellipses-outline" size={29} color="black" />
+          <Ionicons
+            onPress={() => navigation.navigate("Chats")}
+            name="chatbox-ellipses-outline"
+            size={29}
+            color="black"
+          />
           <MaterialIcons
             onPress={() => navigation.navigate("Friends")}
             name="people-outline"
@@ -29,8 +34,8 @@ const HomeScreen = () => {
           />
         </View>
       ),
-    })
-  }, [])
+    });
+  }, []);
 
   useEffect(() => {
     const fetchUsers = async () => {
