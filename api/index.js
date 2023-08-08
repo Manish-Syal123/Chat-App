@@ -234,7 +234,7 @@ app.post("/messages", upload.single("imageFile"), async (req, resp) => {
       messageType,
       message: messageText,
       timeStamp: new Date(),
-      imageUrl: messageType === "image", //when messageType is "image" then only it will gonna filled up with the imageURL
+      imageUrl: messageType === "image" ? req.file.path : null, //when messageType is "image" then only it will gonna filled up with the imageURL
     });
 
     await newMessage.save();

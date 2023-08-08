@@ -14,6 +14,7 @@ import EmojiSelector from "react-native-emoji-selector";
 import { UserType } from "../UserContext";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
 const ChatMessagesScreen = () => {
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
@@ -151,9 +152,25 @@ const ChatMessagesScreen = () => {
     });
   }, [recepientData]);
 
-  const formateTime = (time) => {
+  const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
     return new Date(time).toLocaleString("en-US", options);
+  };
+
+  //onPress camera icon
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      handleSend("image", result.uri);
+    }
   };
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#F0F0F0" }}>
@@ -203,8 +220,61 @@ const ChatMessagesScreen = () => {
                     marginTop: 5,
                   }}
                 >
-                  {formateTime(item.timeStamp)}
+                  {formatTime(item.timeStamp)}
                 </Text>
+              </Pressable>
+            );
+          }
+
+          if (item.messageType === "image") {
+            const baseUrl =
+              "Users/HP/OneDrive/Desktop/Work-Dir/messenger-project/api/files/";
+            const imageUrl = item.imageUrl;
+            const filename = imageUrl.split("/").pop();
+            const source = { uri: baseUrl + filename };
+
+            return (
+              <Pressable
+                key={index}
+                style={[
+                  item?.senderId?._id === userId
+                    ? {
+                        alignSelf: "flex-end",
+                        backgroundColor: "#DCF8C6",
+                        padding: 8,
+                        maxWidth: "60%",
+                        borderRadius: 7,
+                        margin: 10,
+                      }
+                    : {
+                        alignSelf: "flex-start",
+                        backgroundColor: "white",
+                        padding: 8,
+                        margin: 10,
+                        borderRadius: 7,
+                        maxWidth: "60%",
+                      },
+                ]}
+              >
+                <View>
+                  <Image
+                    source={source}
+                    style={{ width: 200, height: 200, borderRadius: 7 }}
+                  />
+                  <Text
+                    style={{
+                      textAlign: "right",
+                      fontSize: 9,
+                      position: "absolute",
+                      right: 10,
+                      bottom: 7,
+                      color: "gray",
+                      marginTop: 5,
+                    }}
+                  >
+                    {formatTime(item?.timeStamp)}
+                  </Text>
+                </View>
               </Pressable>
             );
           }
@@ -254,7 +324,7 @@ const ChatMessagesScreen = () => {
             gap: 5,
           }}
         >
-          <Entypo name="camera" size={24} color="gray" />
+          <Entypo onPress={pickImage} name="camera" size={24} color="gray" />
           <Feather name="mic" size={24} color="gray" />
         </View>
 
