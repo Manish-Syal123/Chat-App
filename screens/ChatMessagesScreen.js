@@ -176,7 +176,7 @@ const ChatMessagesScreen = () => {
             <FontAwesome5 name="share-alt" size={24} color="black" />
             <Ionicons name="ios-copy" size={24} color="black" />
             <MaterialIcons
-              //onPress={() => deleteMessages(selectedMessages)}
+              onPress={() => deleteMessages(selectedMessages)} //passing Array which contains all of the selected Id
               name="delete"
               size={24}
               color="black"
@@ -185,6 +185,31 @@ const ChatMessagesScreen = () => {
         ) : null,
     });
   }, [recepientData, selectedMessages]);
+
+  const deleteMessages = async (messageIds) => {
+    try {
+      const response = await fetch("http://192.168.0.136:8000/deleteMessages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ messages: messageIds }),
+      });
+
+      if (response.ok) {
+        //as now we have deleted the messages from the backend so then empty the selectedMessages array
+        setSelectedMessages((prevSelectedMessages) =>
+          prevSelectedMessages.filter((id) => !messageIds.includes(id))
+        );
+        //load all the messages again as we deleted some messages
+        fetchMessages();
+      } else {
+        console.log("error deleting messages", response.status);
+      }
+    } catch (error) {
+      console.log("error deleting messages", error);
+    }
+  };
 
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
@@ -227,7 +252,7 @@ const ChatMessagesScreen = () => {
   console.log("SelectedMessages ✅ ", selectedMessages);
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#F0F0F0" }}>
-      <ScrollView>
+      <ScrollView scrollEnabled>
         {messages.map((item, index) => {
           const isSelected = selectedMessages.includes(item._id);
           if (item.messageType === "text") {
