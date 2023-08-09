@@ -55,6 +55,7 @@ const ChatMessagesScreen = () => {
       console.log("error fetching messages", error);
     }
   };
+
   //first time -> on refreshing (ie. when we land on this page) we will get all the chats between both the users
   //second time -> whenever the send button is pressed the whole Chats will again gonna rendered on this page again
   useEffect(() => {
@@ -318,6 +319,7 @@ const ChatMessagesScreen = () => {
 
             return (
               <Pressable
+                onLongPress={() => handleSelectMessage(item)}
                 key={index}
                 style={[
                   item?.senderId?._id === userId
@@ -337,6 +339,7 @@ const ChatMessagesScreen = () => {
                         borderRadius: 7,
                         maxWidth: "60%",
                       },
+                  isSelected && { width: "100%", backgroundColor: "#F0FFFF" },
                 ]}
               >
                 <View>
