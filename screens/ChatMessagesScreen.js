@@ -8,7 +8,13 @@ import {
   Pressable,
   Image,
 } from "react-native";
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Entypo, MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import EmojiSelector from "react-native-emoji-selector";
 import { UserType } from "../UserContext";
@@ -33,6 +39,18 @@ const ChatMessagesScreen = () => {
   const [message, setMessage] = useState(""); // simple text message typed by the user inside the TextInput field
   const { userId, setUserId } = useContext(UserType); // current userId
 
+  const scrollViewRef = useRef(null);
+  useEffect(() => {
+    scrollToBottom();
+  }, []);
+  const scrollToBottom = () => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd({ animated: false });
+    }
+  };
+  const handleContentSizeChange = () => {
+    scrollToBottom();
+  };
   //For toggle between Emoji keyboard
   const handleEmojiPress = () => {
     setShowEmojiSelector(!showEmojiSelector);
@@ -253,7 +271,11 @@ const ChatMessagesScreen = () => {
   console.log("SelectedMessages ✅ ", selectedMessages);
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#F0F0F0" }}>
-      <ScrollView scrollEnabled>
+      <ScrollView
+        ref={scrollViewRef}
+        contentContainerStyle={{ flexGrow: 1 }}
+        onContentSizeChange={handleContentSizeChange}
+      >
         {messages.map((item, index) => {
           const isSelected = selectedMessages.includes(item._id);
           if (item.messageType === "text") {
