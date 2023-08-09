@@ -13,11 +13,17 @@ import { Entypo, MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import EmojiSelector from "react-native-emoji-selector";
 import { UserType } from "../UserContext";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialIcons,
+  FontAwesome,
+  FontAwesome5,
+} from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
 const ChatMessagesScreen = () => {
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
+  const [selectedMessages, setSelectedMessages] = useState([]);
   const [messages, setMessages] = useState([]); //contains the whole conversection between both users
   const [selectedImage, setSelectedImage] = useState("");
   const [recepientData, setRecepientData] = useState(); //stors friend detail to show in header
@@ -124,33 +130,61 @@ const ChatMessagesScreen = () => {
             size={30}
             color="black"
           />
-
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Image
+          {selectedMessages.length > 0 ? (
+            <View
               style={{
-                width: 40,
-                height: 40,
-                borderRadius: 19,
-                resizeMode: "cover",
-              }}
-              source={{ uri: recepientData?.image }}
-            />
-
-            <Text
-              style={{
-                marginLeft: 10,
-                fontSize: 16,
-                fontWeight: "bold",
-                overflow: "scroll",
+                borderWidth: 3,
+                borderRadius: 10,
+                padding: 5,
               }}
             >
-              {recepientData?.name}
-            </Text>
-          </View>
+              <Text style={{ fontSize: 16, fontWeight: "500" }}>
+                {selectedMessages.length}
+              </Text>
+            </View>
+          ) : (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 19,
+                  resizeMode: "cover",
+                }}
+                source={{ uri: recepientData?.image }}
+              />
+
+              <Text
+                style={{
+                  marginLeft: 10,
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  overflow: "scroll",
+                }}
+              >
+                {recepientData?.name}
+              </Text>
+            </View>
+          )}
         </View>
       ),
+
+      headerRight: () =>
+        selectedMessages.length > 0 ? (
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 25 }}>
+            <Ionicons name="md-arrow-undo" size={24} color="black" />
+            <FontAwesome5 name="share-alt" size={24} color="black" />
+            <Ionicons name="ios-copy" size={24} color="black" />
+            <MaterialIcons
+              //onPress={() => deleteMessages(selectedMessages)}
+              name="delete"
+              size={24}
+              color="black"
+            />
+          </View>
+        ) : null,
     });
-  }, [recepientData]);
+  }, [recepientData, selectedMessages]);
 
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
@@ -172,13 +206,34 @@ const ChatMessagesScreen = () => {
       handleSend("image", result.uri);
     }
   };
+
+  const handleSelectMessage = (message) => {
+    //check if the message is already selected
+    const isSelected = selectedMessages.includes(message._id);
+
+    if (isSelected) {
+      //if we again longpress on already selected message it will be remove from the selectedMessages
+      setSelectedMessages((previousMessages) =>
+        previousMessages.filter((id) => id !== message._id)
+      );
+    } else {
+      //if its the first time we are selecting the message then add it to the SelectedMessages array
+      setSelectedMessages((previousMessages) => [
+        ...previousMessages,
+        message._id,
+      ]);
+    }
+  };
+  console.log("SelectedMessages ✅ ", selectedMessages);
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#F0F0F0" }}>
       <ScrollView>
         {messages.map((item, index) => {
+          const isSelected = selectedMessages.includes(item._id);
           if (item.messageType === "text") {
             return (
               <Pressable
+                onLongPress={() => handleSelectMessage(item)}
                 key={index}
                 style={[
                   item?.senderId?._id === userId
@@ -202,12 +257,14 @@ const ChatMessagesScreen = () => {
                         borderBottomLeftRadius: 9,
                         maxWidth: "60%",
                       },
+
+                  isSelected && { width: "100%", backgroundColor: "#F0FFFF" },
                 ]}
               >
                 <Text
                   style={{
                     fontSize: 13,
-                    textAlign: "left",
+                    textAlign: isSelected ? "right" : "left",
                   }}
                 >
                   {item?.message}
