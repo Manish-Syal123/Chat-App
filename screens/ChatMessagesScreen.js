@@ -226,9 +226,10 @@ const ChatMessagesScreen = () => {
             );
           }
 
+          //(ISSUE)=> Images are not rendering
           if (item.messageType === "image") {
             const baseUrl =
-              "Users/HP/OneDrive/Desktop/Work-Dir/messenger-project/api/files/";
+              "/Users/HP/OneDrive/Desktop/Work-Dir/Chat-App/api/files/";
             const imageUrl = item.imageUrl;
             const filename = imageUrl.split("/").pop();
             const source = { uri: baseUrl + filename };
@@ -259,6 +260,7 @@ const ChatMessagesScreen = () => {
                 <View>
                   <Image
                     source={source}
+                    // source={{ uri: `../api/files/${filename}` }}
                     style={{ width: 200, height: 200, borderRadius: 7 }}
                   />
                   <Text

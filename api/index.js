@@ -279,3 +279,20 @@ app.get("/messages/:senderId/:recepientId", async (req, resp) => {
     resp.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+//endpoint to delete the messages
+app.post("/deleteMessages", async (req, resp) => {
+  try {
+    const { messages } = req.body; //getting the message id
+
+    if (!Array.isArray(messages) || messages.length === 0) {
+      return resp.status(400).json({ message: "invalid req body!" });
+    }
+
+    await Message.deleteMany({ _id: { $in: messages } }); //$in => include
+    resp.json({ message: "Message deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    resp.status(500).json({ error: "Internal Server" });
+  }
+});
