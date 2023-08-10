@@ -296,3 +296,44 @@ app.post("/deleteMessages", async (req, resp) => {
     resp.status(500).json({ error: "Internal Server" });
   }
 });
+
+//get all the users to whome we have already sent the friendRequest, so that we can show the button of 'Request Sent' on home screen(swift chat)
+app.get("/friend-requests/sent/:userId", async (req, resp) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId)
+      .populate("sentFriendRequests", "name email image")
+      .lean();
+
+    const sentFriendRequests = user.sentFriendRequests;
+
+    resp.json(sentFriendRequests);
+  } catch (error) {
+    console.log("error", error);
+    resp.status(500).json({ error: "Internal Server" });
+  }
+});
+
+//fetching friend list of current user i.e if they are already friends the we will show the button of 'Friend' on main screen(swift chat)
+app.get("/friends/:userId", (req, resp) => {
+  try {
+    const { userId } = req.params;
+
+    User.findById(userId)
+      .populate("friends")
+      .then((user) => {
+        //if it all no users found that means current user has no friends in friends array in database
+        if (!user) {
+          return resp.status(404).json({ message: "User not found" });
+        }
+
+        //if users are there in that friends array then map all the Id of friends
+        const friendIds = user.friends.map((friend) => friend._id);
+
+        resp.status(200).json(friendIds);
+      });
+  } catch (error) {
+    console.log("error", error);
+    resp.status(500).json({ message: "internal server error" });
+  }
+});

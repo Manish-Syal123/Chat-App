@@ -306,7 +306,10 @@ const ChatMessagesScreen = () => {
                         maxWidth: "60%",
                       },
 
-                  isSelected && { width: "100%", backgroundColor: "#F0FFFF" },
+                  isSelected && {
+                    width: "100%",
+                    backgroundColor: "#F0FFFF",
+                  },
                 ]}
               >
                 <Text
