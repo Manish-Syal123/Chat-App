@@ -92,13 +92,21 @@ const HomeScreen = () => {
             </Text>
           </View>
 
-          <View
+          <Pressable
             style={{
               padding: 3,
               borderWidth: 5,
               borderColor: "green",
               borderRadius: 37,
             }}
+            //passed currentuser detail such as image,name & email
+            onPress={() =>
+              navigation.navigate("CurrentUserProfile", {
+                image: currentUser.image,
+                name: currentUser.name,
+                email: currentUser.email,
+              })
+            }
           >
             <Image
               style={{
@@ -109,10 +117,13 @@ const HomeScreen = () => {
               }}
               source={{ uri: currentUser.image }}
             />
-          </View>
+          </Pressable>
         </Pressable>
       </View>
 
+      {/* Search Bar */}
+
+      {/* Rest of the users */}
       <View style={{ padding: 10 }}>
         {users.map((item, index) => (
           <User key={index} item={item} />
