@@ -117,6 +117,24 @@ app.get("/users/:userId", (req, resp) => {
     });
 });
 
+//endpoint to access the current user Data(object)
+app.get("/currentuser/:userId", (req, resp) => {
+  const loggedInUserId = req.params.userId;
+
+  User.findById(loggedInUserId)
+    .then((user) => {
+      if (!user) {
+        return resp.status(404).json({ message: "User not found" });
+      }
+
+      resp.status(200).json(user);
+    })
+    .catch((err) => {
+      console.log("Error retrieving user", err);
+      resp.status(500).json({ message: "Error retrieving user" });
+    });
+});
+
 //endpoint to send a request to a user
 app.post("/friend-request", async (req, resp) => {
   const { currentUserId, selectedUserId } = req.body;
