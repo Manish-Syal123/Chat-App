@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View, Image } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { UserType } from "../UserContext";
-
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 //All Users are shown on home page(swift chat) those who are using(loggedIn to) this app
 const User = ({ item }) => {
   const { userId, setUserId } = useContext(UserType);
@@ -107,22 +107,27 @@ const User = ({ item }) => {
       {userFriends.includes(item._id) ? (
         <Pressable
           style={{
-            backgroundColor: "#82CD47",
+            backgroundColor: "#ffc107",
+            // padding: 10,
+            // width: 105,
             padding: 10,
-            width: 105,
-            borderRadius: 6,
+            width: 50,
+            borderRadius: 25,
+            alignItems: "center",
           }}
         >
-          <Text style={{ textAlign: "center", color: "white" }}>Friends</Text>
+          {/* <Text style={{ textAlign: "center", color: "white" }}>Friends</Text> */}
+          <FontAwesome5 name="user-check" size={24} color="black" />
         </Pressable>
       ) : requestSent ||
         friendRequests.some((friend) => friend._id === item._id) ? (
         <Pressable
           style={{
-            backgroundColor: "gray",
+            backgroundColor: "#0dd18f",
             padding: 10,
             width: 105,
-            borderRadius: 6,
+            borderRadius: 12,
+            alignItems: "center",
           }}
         >
           <Text style={{ textAlign: "center", color: "white", fontSize: 13 }}>
@@ -133,15 +138,18 @@ const User = ({ item }) => {
         <Pressable
           onPress={() => sendFriendRequest(userId, item._id)}
           style={{
-            backgroundColor: "#567189",
-            padding: 10,
-            borderRadius: 6,
+            // backgroundColor: "#82CD47",
+            backgroundColor: "#095869",
+            padding: 5,
+            borderRadius: 12,
             width: 105,
+            alignItems: "center",
           }}
         >
-          <Text style={{ textAlign: "center", color: "white", fontSize: 13 }}>
+          {/* <Text style={{ textAlign: "center", color: "black", fontSize: 13 }}>
             Add Friend
-          </Text>
+          </Text> */}
+          <Ionicons name="person-add" size={24} color="white" />
         </Pressable>
       )}
     </Pressable>

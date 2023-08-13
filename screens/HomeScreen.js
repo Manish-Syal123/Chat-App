@@ -67,8 +67,8 @@ const HomeScreen = () => {
           >
             <Image
               style={{
-                width: 45,
-                height: 45,
+                width: 40,
+                height: 40,
                 borderRadius: 25,
                 // resizeMode: "cover",
               }}
@@ -90,7 +90,7 @@ const HomeScreen = () => {
       axios
         .get(`http://192.168.0.136:8000/users/${userId}`)
         .then((response) => {
-          setUsers(response.data);
+          setUsers(response.data); //storing all the users from database except currentuser
         })
         .catch((error) => {
           console.log("error retrieving users", error);
@@ -210,6 +210,12 @@ const HomeScreen = () => {
             justifyContent: "center",
             flexDirection: "row",
             gap: 8,
+
+            shadowColor: "#000",
+            shadowOffset: { width: 8, height: 8 },
+            shadowOpacity: 1,
+            shadowRadius: 6,
+            elevation: 10, // For Android
           }}
         >
           <Text
