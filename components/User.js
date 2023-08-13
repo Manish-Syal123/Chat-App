@@ -73,7 +73,11 @@ const User = ({ item }) => {
   console.log("user friends 🦾", userFriends);
   return (
     <Pressable
-      style={{ flexDirection: "row", alignItems: "center", marginVertical: 10 }}
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        marginVertical: 10,
+      }}
     >
       <View
       // style={{

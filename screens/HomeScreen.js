@@ -1,7 +1,14 @@
-import { StyleSheet, Text, View, Pressable, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Image,
+  TextInput,
+} from "react-native";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, Feather } from "@expo/vector-icons";
 import { UserType } from "../UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
@@ -13,6 +20,7 @@ const HomeScreen = () => {
   const { userId, setUserId } = useContext(UserType);
   const [users, setUsers] = useState([]); //storing data of all users from database except the current loggedInUser
   const [currentUser, setCurrentUser] = useState({}); //Current user Data //-
+  const [searchtext, setSearchText] = useState("");
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -21,7 +29,13 @@ const HomeScreen = () => {
         <Text style={{ fontSize: 18, fontWeight: "bold" }}>Swift Chat</Text>
       ),
       headerRight: () => (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 18 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 18,
+          }}
+        >
           <Ionicons
             onPress={() => navigation.navigate("Chats")}
             name="chatbox-ellipses-outline"
@@ -34,6 +48,33 @@ const HomeScreen = () => {
             size={29}
             color="black"
           />
+          {/* /Showing th current User profile */}
+          <Pressable
+            style={{
+              padding: 3,
+              borderWidth: 5,
+              borderColor: "green",
+              borderRadius: 37,
+            }}
+            //passed currentuser detail such as image,name & email
+            onPress={() =>
+              navigation.navigate("CurrentUserProfile", {
+                image: currentUser.image,
+                name: currentUser.name,
+                email: currentUser.email,
+              })
+            }
+          >
+            <Image
+              style={{
+                width: 45,
+                height: 45,
+                borderRadius: 25,
+                // resizeMode: "cover",
+              }}
+              source={{ uri: currentUser.image }}
+            />
+          </Pressable>
         </View>
       ),
     });
@@ -72,10 +113,19 @@ const HomeScreen = () => {
   console.log("users", users);
   console.log("currentUser-Data🔥", currentUser); //-
 
+  //Implemented the Search Functionality
+  const [filterdUsers, setFilterdUsers] = useState([]);
+  useEffect(() => {
+    const newProducts = users.filter((user) =>
+      user.name.toLowerCase().includes(searchtext.toLowerCase())
+    );
+    setFilterdUsers(newProducts);
+  }, [searchtext]);
+
   return (
     <View>
       {/* /Showing th current User profile */}
-      <View style={{ padding: 10 }}>
+      {/* <View style={{ padding: 10 }}>
         <Pressable
           style={{
             flexDirection: "row",
@@ -119,16 +169,73 @@ const HomeScreen = () => {
             />
           </Pressable>
         </Pressable>
-      </View>
+      </View> */}
 
       {/* Search Bar */}
+      <View
+        style={{
+          padding: 7,
+          margin: 10,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          // borderWidth: 1,
+          // borderColor: "#e82a9c",
+          borderRadius: 30,
+          backgroundColor: "#897FFF",
 
-      {/* Rest of the users */}
-      <View style={{ padding: 10 }}>
-        {users.map((item, index) => (
-          <User key={index} item={item} />
-        ))}
+          shadowColor: "#000",
+          shadowOffset: { width: 8, height: 8 },
+          shadowOpacity: 1,
+          shadowRadius: 6,
+          elevation: 10, // For Android
+        }}
+      >
+        {/* <Feather name="search" size={24} color="black" /> */}
+        <TextInput
+          onChangeText={setSearchText}
+          placeholder="Search for Items...."
+          placeholderTextColor={"white"}
+          style={{ padding: 1 }}
+        />
+        <Pressable
+          style={{
+            backgroundColor: "white",
+            paddingHorizontal: 20,
+            paddingVertical: 5,
+            borderRadius: 20,
+            // borderWidth: 2.7,
+            // borderColor: "black",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "row",
+            gap: 8,
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: "bold",
+              color: "#897FFF",
+            }}
+          >
+            Search
+          </Text>
+        </Pressable>
       </View>
+      {/* Rest of the users */}
+      {searchtext.length <= 0 ? (
+        <View style={{ padding: 10 }}>
+          {users.map((item, index) => (
+            <User key={index} item={item} />
+          ))}
+        </View>
+      ) : (
+        <View style={{ padding: 10 }}>
+          {filterdUsers.map((item, index) => (
+            <User key={index} item={item} />
+          ))}
+        </View>
+      )}
     </View>
   );
 };

@@ -31,7 +31,11 @@ const StackNavigator = () => {
         <Stack.Screen name="Friends" component={FriendsScreen} />
         <Stack.Screen name="Chats" component={ChatsScreen} />
         <Stack.Screen name="Messages" component={ChatMessagesScreen} />
-        <Stack.Screen name="CurrentUserProfile" component={Profile} />
+        <Stack.Screen
+          name="CurrentUserProfile"
+          component={Profile}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
