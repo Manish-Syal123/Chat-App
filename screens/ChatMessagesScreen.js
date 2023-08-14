@@ -26,6 +26,7 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import * as Clipboard from "expo-clipboard";
 
 const ChatMessagesScreen = () => {
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
@@ -33,6 +34,7 @@ const ChatMessagesScreen = () => {
   const [messages, setMessages] = useState([]); //contains the whole conversection between both users
   const [selectedImage, setSelectedImage] = useState("");
   const [recepientData, setRecepientData] = useState(); //stors friend detail to show in header
+  const [clipboardText, setClipboardText] = useState([]); //-
   const navigation = useNavigation();
   const route = useRoute();
   const { recepientId } = route.params;
@@ -191,9 +193,19 @@ const ChatMessagesScreen = () => {
       headerRight: () =>
         selectedMessages.length > 0 ? (
           <View style={{ flexDirection: "row", alignItems: "center", gap: 25 }}>
-            <Ionicons name="md-arrow-undo" size={24} color="black" />
+            <Ionicons
+              onPress={undoAll}
+              name="md-arrow-undo"
+              size={24}
+              color="black"
+            />
             <FontAwesome5 name="share-alt" size={24} color="black" />
-            <Ionicons name="ios-copy" size={24} color="black" />
+            <Ionicons
+              onPress={handelClipboardText}
+              name="ios-copy"
+              size={24}
+              color="black"
+            />
             <MaterialIcons
               onPress={() => deleteMessages(selectedMessages)} //passing Array which contains all of the selected Id
               name="delete"
@@ -204,6 +216,26 @@ const ChatMessagesScreen = () => {
         ) : null,
     });
   }, [recepientData, selectedMessages]);
+
+  //handeling clipboard text
+  const handelClipboardText = () => {
+    let str = "";
+    // clipboardText.forEach((element) => {
+    //   str = str + "," + element;
+    //   //Clipboard.setStringAsync(str);
+    // });
+    for (let i = 0; i < clipboardText.length; i++) {
+      str = str + clipboardText[0];
+    }
+    Clipboard.setStringAsync(str);
+  };
+  console.log("clipboardtext ⚡⚡", clipboardText);
+
+  //undo all
+  const undoAll = () => {
+    setSelectedMessages([]);
+    setClipboardText([]);
+  };
 
   const deleteMessages = async (messageIds) => {
     try {
@@ -260,12 +292,17 @@ const ChatMessagesScreen = () => {
       setSelectedMessages((previousMessages) =>
         previousMessages.filter((id) => id !== message._id)
       );
+      setClipboardText((prevtext) => {
+        prevtext.filter((txt) => txt !== message.message);
+      });
     } else {
       //if its the first time we are selecting the message then add it to the SelectedMessages array
       setSelectedMessages((previousMessages) => [
         ...previousMessages,
         message._id,
       ]);
+
+      setClipboardText((prevtext) => [...prevtext, message.message]);
     }
   };
   console.log("SelectedMessages ✅ ", selectedMessages);
