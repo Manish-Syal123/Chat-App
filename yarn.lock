@@ -3157,10 +3157,10 @@ expo-asset@~8.10.1:
     path-browserify "^1.0.0"
     url-parse "^1.5.9"
 
-expo-clipboard@4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/expo-clipboard/-/expo-clipboard-4.1.2.tgz#0844566ae8ad1cf72854dc1bbd704c3b09c5d391"
-  integrity sha512-YSuIs4CV+3gypl7X74sp2ruwAVuhnOngsWs7EGkcvRdX0BBrZZMk3GXGw9a59sU6SW4wGWAfwrhyCT41GUaN+A==
+expo-clipboard@4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/expo-clipboard/-/expo-clipboard-4.3.1.tgz#ce6ed35ae31c7fc1aeadb005b8eb9b39a8bb9b40"
+  integrity sha512-WIsjvAsr2+/NZRa84mKxjui1EdPpdKbQIC2LN/KMBNuT7g4GQYL3oo9WO9G/C7doKQ7f7pnfdvO3N6fUnoRoJw==
 
 expo-constants@~14.4.2:
   version "14.4.2"

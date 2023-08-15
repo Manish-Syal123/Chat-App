@@ -78,7 +78,7 @@ const HomeScreen = () => {
         </View>
       ),
     });
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
     const fetchUsers = async () => {
