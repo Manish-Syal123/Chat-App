@@ -116,10 +116,10 @@ const HomeScreen = () => {
   //Implemented the Search Functionality
   const [filterdUsers, setFilterdUsers] = useState([]);
   useEffect(() => {
-    const newProducts = users.filter((user) =>
+    const SearchedUsers = users.filter((user) =>
       user.name.toLowerCase().includes(searchtext.toLowerCase())
     );
-    setFilterdUsers(newProducts);
+    setFilterdUsers(SearchedUsers);
   }, [searchtext]);
 
   return (
@@ -199,6 +199,7 @@ const HomeScreen = () => {
           style={{ padding: 1 }}
         />
         <Pressable
+          onPress={() => navigation.navigate("Onboard")}
           style={{
             backgroundColor: "white",
             paddingHorizontal: 20,

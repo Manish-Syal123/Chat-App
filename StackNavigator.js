@@ -9,6 +9,7 @@ import FriendsScreen from "./screens/FriendsScreen";
 import ChatsScreen from "./screens/ChatsScreen";
 import ChatMessagesScreen from "./screens/ChatMessagesScreen";
 import Profile from "./screens/Profile";
+import OnboardingScreen from "./screens/OnboardingScreen";
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -34,6 +35,11 @@ const StackNavigator = () => {
         <Stack.Screen
           name="CurrentUserProfile"
           component={Profile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Onboard"
+          component={OnboardingScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
