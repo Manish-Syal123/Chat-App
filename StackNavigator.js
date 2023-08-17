@@ -10,6 +10,8 @@ import ChatsScreen from "./screens/ChatsScreen";
 import ChatMessagesScreen from "./screens/ChatMessagesScreen";
 import Profile from "./screens/Profile";
 import OnboardingScreen from "./screens/OnboardingScreen";
+import ForLottieScreen from "./screens/ForLottieScreen";
+import ShareScreen from "./screens/ShareScreen";
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -40,6 +42,16 @@ const StackNavigator = () => {
         <Stack.Screen
           name="Onboard"
           component={OnboardingScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Share"
+          component={ShareScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Testing"
+          component={ForLottieScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

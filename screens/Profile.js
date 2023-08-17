@@ -81,27 +81,56 @@ const Profile = () => {
         <Text style={{ color: "white" }}>{route.params.email}</Text>
       </Pressable>
 
-      <Pressable
+      <View
         style={{
           marginTop: 260,
           marginStart: -200,
-          // backgroundColor: "#36454f",
-          backgroundColor: "#415a77",
-          //backgroundColor: "black",
-          paddingHorizontal: 20,
-          paddingVertical: 5,
-          borderRadius: 20,
-          borderWidth: 2.7,
-          borderColor: "white",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "row",
-          gap: 8,
+          flexDirection: "column",
         }}
       >
-        <Text style={{ color: "white" }}>LogOut</Text>
-        <AntDesign name="logout" size={24} color="white" />
-      </Pressable>
+        <Pressable
+          onPress={() => navigation.navigate("Testing")}
+          style={{
+            // backgroundColor: "#36454f",
+            backgroundColor: "#415a77",
+            //backgroundColor: "black",
+            paddingHorizontal: 20,
+            paddingVertical: 5,
+            borderRadius: 20,
+            borderWidth: 2.7,
+            borderColor: "white",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "row",
+            gap: 8,
+          }}
+        >
+          <Text style={{ color: "white" }}>LogOut</Text>
+          <AntDesign name="logout" size={24} color="white" />
+        </Pressable>
+        <Pressable
+          onPress={() => navigation.navigate("Testing")}
+          style={{
+            position: "relative",
+            left: "250%",
+            // backgroundColor: "#36454f",
+            backgroundColor: "#415a77",
+            //backgroundColor: "black",
+            paddingHorizontal: 20,
+            paddingVertical: 5,
+            borderRadius: 20,
+            borderWidth: 2.7,
+            borderColor: "white",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "row",
+            gap: 8,
+          }}
+        >
+          <Text style={{ color: "white" }}>OnBoard</Text>
+          <AntDesign name="swap" size={24} color="white" />
+        </Pressable>
+      </View>
     </ImageBackground>
   );
 };

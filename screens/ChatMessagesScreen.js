@@ -199,7 +199,16 @@ const ChatMessagesScreen = () => {
               size={24}
               color="black"
             />
-            <FontAwesome5 name="share-alt" size={24} color="black" />
+            <FontAwesome5
+              onPress={() =>
+                navigation.navigate("Share", {
+                  shareText: clipboardText,
+                })
+              }
+              name="share-alt"
+              size={24}
+              color="black"
+            />
             <Ionicons
               onPress={handelClipboardText}
               name="ios-copy"
@@ -220,13 +229,13 @@ const ChatMessagesScreen = () => {
   //handeling clipboard text
   const handelClipboardText = () => {
     let str = "";
-    // clipboardText.forEach((element) => {
-    //   str = str + "," + element;
-    //   //Clipboard.setStringAsync(str);
-    // });
-    for (let i = 0; i < clipboardText.length; i++) {
-      str = str + clipboardText[0];
-    }
+    clipboardText.forEach((element) => {
+      str = str + "," + element;
+      //Clipboard.setStringAsync(str);
+    });
+    // for (let i = 0; i < clipboardText.length; i++) {
+    //   str = str + clipboardText[0];
+    // }
     Clipboard.setStringAsync(str);
   };
   console.log("clipboardtext ⚡⚡", clipboardText);

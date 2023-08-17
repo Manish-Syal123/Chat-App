@@ -34,7 +34,7 @@ const OnboardingScreen = () => {
           {
             // backgroundColor: "#fef3c7",
             // backgroundColor: "#E6E6FA", // light lavender
-            backgroundColor: "#66cdaa", // green
+            backgroundColor: "black",
             image: (
               <View style={styles.lottie}>
                 <Lottie
