@@ -210,7 +210,7 @@ const ChatMessagesScreen = () => {
               color="black"
             />
             <Ionicons
-              onPress={handelClipboardText}
+              onPress={() => handelClipboardText(clipboardText)}
               name="ios-copy"
               size={24}
               color="black"
@@ -227,18 +227,12 @@ const ChatMessagesScreen = () => {
   }, [recepientData, selectedMessages]);
 
   //handeling clipboard text
-  const handelClipboardText = () => {
-    let str = "";
-    clipboardText.forEach((element) => {
-      str = str + "," + element;
-      //Clipboard.setStringAsync(str);
-    });
-    // for (let i = 0; i < clipboardText.length; i++) {
-    //   str = str + clipboardText[0];
-    // }
+  console.log("clipboardtext ⚡⚡", clipboardText);
+  const handelClipboardText = (textArray) => {
+    console.log("TextArray 🟰⚡", textArray);
+    const str = textArray.join("");
     Clipboard.setStringAsync(str);
   };
-  console.log("clipboardtext ⚡⚡", clipboardText);
 
   //undo all
   const undoAll = () => {
@@ -301,17 +295,16 @@ const ChatMessagesScreen = () => {
       setSelectedMessages((previousMessages) =>
         previousMessages.filter((id) => id !== message._id)
       );
-      setClipboardText((prevtext) => {
-        prevtext.filter((txt) => txt !== message.message);
-      });
+      setClipboardText((prevtext) =>
+        prevtext.filter((txt) => txt !== message.message)
+      );
     } else {
-      //if its the first time we are selecting the message then add it to the SelectedMessages array
-      setSelectedMessages((previousMessages) => [
-        ...previousMessages,
-        message._id,
-      ]);
-
-      setClipboardText((prevtext) => [...prevtext, message.message]);
+      //if its the first time we are selecting the message then add it to the SelectedMessages array and add it'smessage text in setClipboardText array
+      setSelectedMessages((previousMessages) => {
+        const updatedSelectedMessages = [...previousMessages, message._id];
+        setClipboardText((prevtext) => [...prevtext, message.message]);
+        return updatedSelectedMessages;
+      });
     }
   };
   console.log("SelectedMessages ✅ ", selectedMessages);
