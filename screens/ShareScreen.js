@@ -59,7 +59,7 @@ const ShareScreen = () => {
           //gap: 70,
           alignItems: "center",
           marginTop: 20,
-          backgroundColor: "#444654s",
+          backgroundColor: "#444654",
           // backgroundColor: "black",
           borderRadius: 20,
           padding: 10,
