@@ -5,6 +5,7 @@ import {
   Pressable,
   Image,
   TextInput,
+  ImageBackground,
 } from "react-native";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -26,7 +27,17 @@ const HomeScreen = () => {
     navigation.setOptions({
       headerTitle: "",
       headerLeft: () => (
-        <Text style={{ fontSize: 18, fontWeight: "bold" }}>Swift Chat</Text>
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: "bold",
+            color: "#fff",
+            fontFamily: "monospace",
+            // fontFamily: "serif",
+          }}
+        >
+          Xplore-Talk
+        </Text>
       ),
       headerRight: () => (
         <View
@@ -76,6 +87,12 @@ const HomeScreen = () => {
             />
           </Pressable>
         </View>
+      ),
+      headerBackground: () => (
+        <ImageBackground
+          source={require("../assets/images/Cool-wallpaper.jpg")} // Provide the correct image path
+          style={{ flex: 1 }}
+        />
       ),
     });
   }, [currentUser]);

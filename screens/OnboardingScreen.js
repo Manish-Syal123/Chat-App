@@ -1,15 +1,63 @@
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Onboarding from "react-native-onboarding-swiper";
 import Lottie from "lottie-react-native";
+import { useNavigation } from "@react-navigation/native";
+import { AntDesign, Feather, FontAwesome5, Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
 const OnboardingScreen = () => {
+  const navigation = useNavigation();
+
+  const handleDone = async () => {
+    navigation.navigate("Login");
+    try {
+      await AsyncStorage.setItem("onboarded", "1");
+    } catch (error) {
+      console.log("Error storing value: ", error);
+    }
+  };
+
+  const doneButton = ({ ...props }) => {
+    return (
+      <TouchableOpacity style={styles.nextButton} {...props}>
+        <Text style={{ color: "white", fontSize: 17 }}>Done</Text>
+        <Ionicons
+          name="ios-checkmark-done-circle-sharp"
+          size={29}
+          color="white"
+        />
+      </TouchableOpacity>
+    );
+  };
+  const nextButton = ({ ...props }) => {
+    return (
+      <TouchableOpacity style={styles.nextButton} {...props}>
+        <Text style={{ color: "white", fontSize: 17 }}>Next</Text>
+        {/* <AntDesign name="arrowright" size={24} color="white" /> */}
+        {/* <Feather name="arrow-right-circle" size={24} color="white" /> */}
+        <FontAwesome5 name="arrow-circle-right" size={24} color="white" />
+      </TouchableOpacity>
+    );
+  };
   return (
     <View style={styles.container}>
       <Onboarding
+        onDone={handleDone}
+        onSkip={handleDone}
+        DoneButtonComponent={doneButton}
+        //SkipButtonComponent={skipButton}
+        NextButtonComponent={nextButton}
+        bottomBarHighlight={false}
         containerStyles={{ paddingHorizontal: 15 }}
         pages={[
           {
@@ -34,13 +82,14 @@ const OnboardingScreen = () => {
           {
             // backgroundColor: "#fef3c7",
             // backgroundColor: "#E6E6FA", // light lavender
-            backgroundColor: "black",
+            backgroundColor: "white",
             image: (
               <View style={styles.lottie}>
                 <Lottie
                   source={require("../assets/animation/IconsPopping.json")}
                   autoPlay
                   loop
+                  style={{ backgroundColor: "white" }}
                 />
               </View>
             ),

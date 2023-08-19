@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //LogOut button with functionality
 //Big User Profile image
 //name
@@ -89,7 +90,10 @@ const Profile = () => {
         }}
       >
         <Pressable
-          onPress={() => navigation.navigate("Testing")}
+          onPress={() => {
+            AsyncStorage.clear;
+            navigation.replace("Login");
+          }}
           style={{
             // backgroundColor: "#36454f",
             backgroundColor: "#415a77",

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
@@ -12,10 +12,35 @@ import Profile from "./screens/Profile";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import ForLottieScreen from "./screens/ForLottieScreen";
 import ShareScreen from "./screens/ShareScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
 
+  const [showOnboarding, setShowOnboarding] = useState(null);
+
+  useEffect(() => {
+    checkIfAlreadyOnboarded();
+  }, []);
+
+  const checkIfAlreadyOnboarded = async () => {
+    try {
+      let onboarded = await AsyncStorage.getItem("onboarded");
+      if (onboarded == 1) {
+        // hide onboarding
+        setShowOnboarding(false);
+      } else {
+        // show onboarding
+        setShowOnboarding(true);
+      }
+    } catch (error) {
+      console.log("Error retrieving value: ", error);
+    }
+  };
+
+  if (showOnboarding == null) {
+    return null;
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator>

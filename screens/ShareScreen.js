@@ -84,7 +84,7 @@ const ShareScreen = () => {
       </View>
       <View
         style={{
-          marginTop: 20, // Adjusted the value to make the animation touch the header
+          marginTop: 30, // Adjusted the value to make the animation touch the header
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -114,7 +114,7 @@ const ShareScreen = () => {
             justifyContent: "center",
             alignItems: "center",
             marginHorizontal: 40,
-            marginTop: 40,
+            marginTop: 70,
             backgroundColor: "#FCD34D",
             borderWidth: 2,
             borderRadius: 20,
