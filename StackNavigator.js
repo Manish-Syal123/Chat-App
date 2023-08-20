@@ -41,47 +41,92 @@ const StackNavigator = () => {
   if (showOnboarding == null) {
     return null;
   }
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
 
-        <Stack.Screen
-          name="Register"
-          component={RegisterScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Friends" component={FriendsScreen} />
-        <Stack.Screen name="Chats" component={ChatsScreen} />
-        <Stack.Screen name="Messages" component={ChatMessagesScreen} />
-        <Stack.Screen
-          name="CurrentUserProfile"
-          component={Profile}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Onboard"
-          component={OnboardingScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Share"
-          component={ShareScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Testing"
-          component={ForLottieScreen}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  if (showOnboarding) {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Onboard">
+          <Stack.Screen
+            name="Onboard"
+            component={OnboardingScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Friends" component={FriendsScreen} />
+          <Stack.Screen name="Chats" component={ChatsScreen} />
+          <Stack.Screen name="Messages" component={ChatMessagesScreen} />
+          <Stack.Screen
+            name="CurrentUserProfile"
+            component={Profile}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="Share"
+            component={ShareScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Testing"
+            component={ForLottieScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  } else {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Friends" component={FriendsScreen} />
+          <Stack.Screen name="Chats" component={ChatsScreen} />
+          <Stack.Screen name="Messages" component={ChatMessagesScreen} />
+          <Stack.Screen
+            name="CurrentUserProfile"
+            component={Profile}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Onboard"
+            component={OnboardingScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Share"
+            component={ShareScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Testing"
+            component={ForLottieScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
 };
 
 export default StackNavigator;

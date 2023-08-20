@@ -6,7 +6,7 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -17,8 +17,27 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Profile = () => {
   const route = useRoute();
   const navigation = useNavigation();
-
   console.log("route data⚡", route.params);
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.clear(); // Clear async storage
+      navigation.navigate("Login"); // Navigate to the login screen
+    } catch (error) {
+      console.log("Error clearing data: ", error);
+    }
+  };
+
+  // Logic to handle redirecting to onboarding
+  const handleReset = async () => {
+    try {
+      await AsyncStorage.removeItem("onboarded");
+      navigation.replace("Onboard");
+    } catch (error) {
+      console.log("Error deleting value: ", error);
+    }
+  };
+
   return (
     <ImageBackground
       source={require("../assets/images/Winter-Nature.png")}
@@ -90,10 +109,15 @@ const Profile = () => {
         }}
       >
         <Pressable
-          onPress={() => {
-            AsyncStorage.clear;
-            navigation.replace("Login");
-          }}
+          onPress={handleLogout}
+          // onPress={async () => {
+          //   try {
+          //     await AsyncStorage.clear(); // Clear async storage
+          //     navigation.push("Login"); // Navigate to the login screen
+          //   } catch (error) {
+          //     console.log("Error clearing data: ", error);
+          //   }
+          // }}
           style={{
             // backgroundColor: "#36454f",
             backgroundColor: "#415a77",
@@ -113,7 +137,7 @@ const Profile = () => {
           <AntDesign name="logout" size={24} color="white" />
         </Pressable>
         <Pressable
-          onPress={() => navigation.navigate("Testing")}
+          onPress={handleReset}
           style={{
             position: "relative",
             left: "250%",

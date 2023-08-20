@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import Onboarding from "react-native-onboarding-swiper";
 import Lottie from "lottie-react-native";
 import { useNavigation } from "@react-navigation/native";

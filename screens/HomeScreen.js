@@ -26,12 +26,18 @@ const HomeScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
+      // headerBackground: () => (
+      //   <ImageBackground
+      //     source={require("../assets/images/Cool-wallpaper.jpg")} // Provide the correct image path
+      //     style={{ flex: 1 }}
+      //   />
+      // ),
       headerLeft: () => (
         <Text
           style={{
             fontSize: 18,
             fontWeight: "bold",
-            color: "#fff",
+            //color: "white",
             fontFamily: "monospace",
             // fontFamily: "serif",
           }}
@@ -87,12 +93,6 @@ const HomeScreen = () => {
             />
           </Pressable>
         </View>
-      ),
-      headerBackground: () => (
-        <ImageBackground
-          source={require("../assets/images/Cool-wallpaper.jpg")} // Provide the correct image path
-          style={{ flex: 1 }}
-        />
       ),
     });
   }, [currentUser]);
@@ -211,12 +211,11 @@ const HomeScreen = () => {
         {/* <Feather name="search" size={24} color="black" /> */}
         <TextInput
           onChangeText={setSearchText}
-          placeholder="Search for Items...."
+          placeholder="Search for Items....                             "
           placeholderTextColor={"white"}
           style={{ padding: 1 }}
         />
         <Pressable
-          onPress={() => navigation.navigate("Onboard")}
           style={{
             backgroundColor: "white",
             paddingHorizontal: 20,
