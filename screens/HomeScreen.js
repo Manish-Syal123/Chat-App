@@ -26,12 +26,12 @@ const HomeScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
-      // headerBackground: () => (
-      //   <ImageBackground
-      //     source={require("../assets/images/Cool-wallpaper.jpg")} // Provide the correct image path
-      //     style={{ flex: 1 }}
-      //   />
-      // ),
+      headerBackground: () => (
+        <ImageBackground
+          source={require("../assets/images/Cool-wallpaper.jpg")} // Provide the correct image path
+          style={{ flex: 1 }}
+        />
+      ),
       headerLeft: () => (
         <Text
           style={{

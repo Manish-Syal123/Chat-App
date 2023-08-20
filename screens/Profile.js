@@ -21,10 +21,10 @@ const Profile = () => {
 
   const handleLogout = async () => {
     try {
-      await AsyncStorage.clear(); // Clear async storage
+      await AsyncStorage.removeItem("authToken"); // Remove authToken from AsyncStorage
       navigation.navigate("Login"); // Navigate to the login screen
     } catch (error) {
-      console.log("Error clearing data: ", error);
+      console.log("Error removing authToken: ", error);
     }
   };
 
