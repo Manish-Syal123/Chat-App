@@ -6,7 +6,7 @@ import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 const User = ({ item }) => {
   const { userId, setUserId } = useContext(UserType);
   const [requestSent, setRequestSent] = useState(false); //for changing the button value from 'Add friend' => 'Request sent'
-  const [friendRequests, setFriendRequests] = useState([]); // to whome we have sent friend requests and they didn't accept yet
+  const [friendRequests, setFriendRequests] = useState([]); // to whome we have sent friend requests and they haven't accept yet
   const [userFriends, setUserFriends] = useState([]); // All the friends of current user
 
   useEffect(() => {

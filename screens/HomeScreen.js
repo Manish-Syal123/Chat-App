@@ -27,10 +27,11 @@ const HomeScreen = () => {
     navigation.setOptions({
       headerTitle: "",
       headerBackground: () => (
-        <ImageBackground
-          source={require("../assets/images/Cool-wallpaper.jpg")} // Provide the correct image path
-          style={{ flex: 1 }}
-        />
+        // <ImageBackground
+        //   source={require("../assets/images/Cool-wallpaper.jpg")} // Provide the correct image path
+        //   style={{ flex: 1 }}
+        // />
+        <View style={{ flex: 1, backgroundColor: "white" }}></View>
       ),
       headerLeft: () => (
         <Text

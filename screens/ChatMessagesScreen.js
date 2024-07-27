@@ -375,12 +375,15 @@ const ChatMessagesScreen = () => {
 
           //(ISSUE)=> Images are not rendering
           if (item.messageType === "image") {
-            const baseUrl =
-              "/Users/HP/OneDrive/Desktop/Work-Dir/Chat-App/api/files/";
+            // const baseUrl =
+            //   "/Users/HP/OneDrive/Desktop/Work-Dir/Chat-App/api/files/";
             const imageUrl = item.imageUrl;
-            const filename = imageUrl.split("/").pop();
-            const source = { uri: baseUrl + filename };
-
+            const filename = imageUrl.split("/").pop(); //typeOf(filename)==>string
+            const newFilename = filename.split("\\").pop();
+            //const imageSource = require("../api/files/1691419138621-901713347-image.jpg");
+            const finalname = "../api/files/" + newFilename;
+            console.log("NEW_FILE_NAME====>", finalname);
+            const imageSource = { uri: `../api/files/${newFilename}` };
             return (
               <Pressable
                 onLongPress={() => handleSelectMessage(item)}
@@ -408,8 +411,9 @@ const ChatMessagesScreen = () => {
               >
                 <View>
                   <Image
-                    source={source}
-                    // source={{ uri: `../api/files/${filename}` }}
+                    // source={imageSource}
+                    source={{ uri: `${finalname}` }}
+                    // source={{ uri: `../api/files/${newFilename}` }}
                     style={{ width: 200, height: 200, borderRadius: 7 }}
                   />
                   <Text
