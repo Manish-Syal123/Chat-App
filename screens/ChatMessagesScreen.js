@@ -373,7 +373,7 @@ const ChatMessagesScreen = () => {
             );
           }
 
-          //(ISSUE)=> Images are not rendering
+          //(ISSUE)=> Images are not rendering // Upadated: Issue Resolved
           if (item.messageType === "image") {
             // const baseUrl =
             //   "/Users/HP/OneDrive/Desktop/Work-Dir/Chat-App/api/files/";
@@ -394,7 +394,7 @@ const ChatMessagesScreen = () => {
                     ? {
                         alignSelf: "flex-end",
                         backgroundColor: "#DCF8C6",
-                        padding: 8,
+                        padding: 4,
                         maxWidth: "60%",
                         borderRadius: 7,
                         margin: 10,
@@ -402,7 +402,7 @@ const ChatMessagesScreen = () => {
                     : {
                         alignSelf: "flex-start",
                         backgroundColor: "white",
-                        padding: 8,
+                        padding: 4,
                         margin: 10,
                         borderRadius: 7,
                         maxWidth: "60%",
