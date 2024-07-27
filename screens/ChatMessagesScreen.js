@@ -381,9 +381,10 @@ const ChatMessagesScreen = () => {
             const filename = imageUrl.split("/").pop(); //typeOf(filename)==>string
             const newFilename = filename.split("\\").pop();
             //const imageSource = require("../api/files/1691419138621-901713347-image.jpg");
-            const finalname = "../api/files/" + newFilename;
-            console.log("NEW_FILE_NAME====>", finalname);
-            const imageSource = { uri: `../api/files/${newFilename}` };
+            const finalname = "../usersUploadedImages/" + newFilename;
+            // console.log("NEW_FILE_NAME====>", finalname);
+            const imageSource = `http://192.168.0.136:8000/usersUploadedImages/${newFilename}`;
+            console.log("NEW_FILE_NAME====>", imageSource);
             return (
               <Pressable
                 onLongPress={() => handleSelectMessage(item)}
@@ -412,8 +413,12 @@ const ChatMessagesScreen = () => {
                 <View>
                   <Image
                     // source={imageSource}
-                    source={{ uri: `${finalname}` }}
-                    // source={{ uri: `../api/files/${newFilename}` }}
+                    // source="../usersUploadedImages/1722083423203-230079994-image.jpg"
+                    // source={{ uri: `${finalname}` }}
+                    // source={{ uri: `../usersUploadedImages/${newFilename}` }}
+                    source={{
+                      uri: `http://192.168.0.136:8000/usersUploadedImages/${newFilename}`,
+                    }}
                     style={{ width: 200, height: 200, borderRadius: 7 }}
                   />
                   <Text

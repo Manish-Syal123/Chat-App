@@ -12,6 +12,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
+app.use("/usersUploadedImages", express.static("../usersUploadedImages"));
+
 const jwt = require("jsonwebtoken");
 
 mongose
@@ -229,7 +231,7 @@ app.get("/accepted-friends/:userId", async (req, resp) => {
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "files/"); // Specify the desired destination folder
+    cb(null, "../usersUploadedImages"); // Specify the desired destination folder
   },
   filename: function (req, file, cb) {
     // Generate a unique filename for the uploaded file
